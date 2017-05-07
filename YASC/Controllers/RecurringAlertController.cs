@@ -28,10 +28,10 @@ namespace YASC.Controllers
         }
 
         // GET: RecurringAlerts
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var applicationDbContext = _context.RecurringAlerts.Include(r => r.ApplicationUser);
-            return View(await applicationDbContext.ToListAsync());
+            var applicationDbContext = _context.RecurringAlerts.Include(r => r.ApplicationUser).ToList().Where(x=>x.ApplicationUserId == _userManager.GetUserId(HttpContext.User));
+            return View(applicationDbContext.ToList());
         }
 
         // GET: RecurringAlerts/Details/5
@@ -45,10 +45,15 @@ namespace YASC.Controllers
             var recurringAlert = await _context.RecurringAlerts
                 .Include(r => r.ApplicationUser)
                 .SingleOrDefaultAsync(m => m.Id == id);
+
+
             if (recurringAlert == null)
             {
                 return NotFound();
             }
+
+            if (recurringAlert.ApplicationUserId != _userManager.GetUserId(HttpContext.User))
+                return NotFound();
 
             return View(recurringAlert);
         }
@@ -95,6 +100,10 @@ namespace YASC.Controllers
             {
                 return NotFound();
             }
+
+            if (recurringAlert.ApplicationUserId != _userManager.GetUserId(HttpContext.User))
+                return NotFound();
+
             ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id",
                 recurringAlert.ApplicationUserId);
             return View(recurringAlert);
@@ -112,6 +121,9 @@ namespace YASC.Controllers
             {
                 return NotFound();
             }
+
+            if (recurringAlert.ApplicationUserId != _userManager.GetUserId(HttpContext.User))
+                return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -146,6 +158,7 @@ namespace YASC.Controllers
                 return NotFound();
             }
 
+
             var recurringAlert = await _context.RecurringAlerts
                 .Include(r => r.ApplicationUser)
                 .SingleOrDefaultAsync(m => m.Id == id);
@@ -153,6 +166,9 @@ namespace YASC.Controllers
             {
                 return NotFound();
             }
+
+            if (recurringAlert.ApplicationUserId != _userManager.GetUserId(HttpContext.User))
+                return NotFound();
 
             return View(recurringAlert);
         }
@@ -165,7 +181,7 @@ namespace YASC.Controllers
             var recurringAlert = await _context.RecurringAlerts.SingleOrDefaultAsync(m => m.Id == id);
             _context.RecurringAlerts.Remove(recurringAlert);
             await _context.SaveChangesAsync();
-            RecurringJob.RemoveIfExists(recurringAlert.Url);
+            RecurringJob.RemoveIfExists(recurringAlert.Url + recurringAlert.EmailAddress);
             return RedirectToAction("Index");
         }
 

@@ -8,7 +8,7 @@ namespace YASC.Services
     {
         public void AddJob(string url, string emailAddress)
         {
-            RecurringJob.AddOrUpdate(url, () => AlertingService.CheckDomain(url, emailAddress), Cron.Daily());
+            RecurringJob.AddOrUpdate(url + emailAddress, () => AlertingService.CheckDomain(url, emailAddress), Cron.Daily());
         }
 
         // ReSharper disable once MemberCanBePrivate.Global

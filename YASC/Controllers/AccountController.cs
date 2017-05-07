@@ -139,7 +139,7 @@ namespace YASC.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(VerificationController.Index), "Home");
+            return RedirectToAction(nameof(VerificationController.Index), "Verification");
         }
 
         //
@@ -467,7 +467,7 @@ namespace YASC.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(VerificationController.Index), nameof(VerificationController));
+                return RedirectToAction(nameof(VerificationController.Index), "Verification");
             }
         }
 
