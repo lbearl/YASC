@@ -1,0 +1,45 @@
+@model YASC.Models.CertificateStatus
+
+@{
+    ViewBag.Title = "Verification: " + Model.Url;
+    Layout = "_Layout";
+}
+
+<h2>Verification: @Model.Url</h2>
+
+@if (Model.NotAfter < DateTime.UtcNow)
+{
+    <div class="alert alert-danger">
+        This certificate is expired.
+    </div>
+}
+
+@if (Model.NotBefore > DateTime.UtcNow)
+{
+    <div class="alert alert-warning">
+        This certificate is not yet valid.
+    </div>
+}
+
+@if (Model.NotAfter < DateTime.UtcNow.AddDays(-30) && Model.NotAfter >= DateTime.UtcNow)
+{
+    <div class="alert alert-info">
+        This certificate expires in the next 30 days.
+    </div>
+}
+
+<p>This certificate is valid from @Model.NotBefore.ToShortDateString() until @Model.NotAfter.ToShortDateString().</p>
+
+<dl>
+    <dt>Issuer</dt>
+    <dd>@Model.Issuer</dd>
+    <dt>Subject</dt>
+    <dd>@Model.Subject</dd>
+    <dt>Thumbprint</dt>
+    <dd>@Model.Thumbprint</dd>
+</dl>
+
+<hr />
+
+<p>View more advanced diagnostics about this certificate here: <a href="https://www.ssllabs.com/ssltest/analyze.html?d=@Model.Url.Replace("https://", "")&latest">SSL Labs*</a></p>
+<p>Note that this website has no affiliation with Qualys SSL Labs.</p>
