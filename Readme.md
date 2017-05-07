@@ -1,6 +1,8 @@
 ﻿# YASC
 Yet Another SSL Checker
 
+Please read more about it [at my blog](https://lukebearl.com/2017/05/yasc-yet-another-ssl-checker/)
+
 ## Introduction
 YASC is a simple utility to check the health of SSL certificates for websites. It boasts the following features:
 

@@ -20,5 +20,10 @@ namespace YASC.Services
                 await new DomainAlertEmailSender().SendEmailAsync(emailAddress, url);
             }
         }
+
+        public static async Task NewUserConfirmation(string url, string emailAddress)
+        {
+            await new DomainAlertEmailSender().SendNewUserEmailAsync(emailAddress, url);
+        }
     }
 }

@@ -1,5 +1,10 @@
 @model YASC.Models.CertificateStatusViewModels.CertificateStatusRequestVm
 
+@{
+    ViewBag.Title = "Home";
+    Layout = "_Layout";
+}
+
 <h3>View Certificate</h3>
 
 @if (!string.IsNullOrEmpty(Model?.Url) && ViewData.ModelState.IsValid)

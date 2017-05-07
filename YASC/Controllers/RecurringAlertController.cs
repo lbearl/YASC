@@ -71,15 +71,18 @@ namespace YASC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("Id,EmailAddress,Url")] RecurringAlert recurringAlert)
+            [Bind("Id,Url")] RecurringAlert recurringAlert)
         {
             if (ModelState.IsValid)
             {
                 recurringAlert.CreatedOn = DateTime.Now;
                 recurringAlert.ApplicationUserId = _userManager.GetUserId(HttpContext.User);
+                recurringAlert.EmailAddress = (await _userManager.GetUserAsync(HttpContext.User)).Email;
                 _context.Add(recurringAlert);
                 await _context.SaveChangesAsync();
                 _alertingService.AddJob(recurringAlert.Url, recurringAlert.EmailAddress);
+                BackgroundJob.Enqueue(
+                    () => AlertingService.NewUserConfirmation(recurringAlert.Url, recurringAlert.EmailAddress));
                 return RedirectToAction("Index");
             }
             ViewData["ApplicationUserId"] = new SelectList(_context.Set<ApplicationUser>(), "Id", "Id",
