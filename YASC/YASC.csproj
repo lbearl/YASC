@@ -7,6 +7,8 @@
 
   <PropertyGroup>
     <UserSecretsId>aspnet-YASC-8ee431bb-d9b4-4f8b-972d-f6d90568e2a9</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/45d395ba-d7c4-4cd3-909d-753988060790/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/YASC</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/45d395ba-d7c4-4cd3-909d-753988060790/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/YASC</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -42,6 +44,9 @@
   <ItemGroup>
     <Folder Include="Views\RecurringAlert\" />
     <Folder Include="Views\Verification\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>
